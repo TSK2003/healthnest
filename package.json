@@ -1,0 +1,30 @@
+{
+  "name": "healnest-clinic",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "engines": {
+    "node": ">=22 <25"
+  },
+  "scripts": {
+    "dev:web": "npm run dev -w apps/web",
+    "dev:api": "npm run build -w apps/api && node --watch apps/api/dist/main.js",
+    "build": "npm run build -w apps/web && npm run build -w apps/api && node scripts/prerender.mjs",
+    "build:web": "npm run build -w apps/web && node scripts/prerender.mjs",
+    "deploy:firebase": "npm run build:web && firebase deploy",
+    "start": "node apps/api/dist/main.js",
+    "test": "npm run test -w apps/api",
+    "db:migrate": "node apps/api/dist/migrate.js",
+    "db:prune": "node apps/api/dist/prune.js",
+    "preview:export": "node scripts/export-preview.mjs",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,css,json,cjs,html}\" \"scripts/*.mjs\" \"*.{json,md}\"",
+    "watch:api": "npm run dev -w apps/api"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "esbuild": "^0.25.0"
+  }
+}

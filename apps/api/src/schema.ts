@@ -1,0 +1,23 @@
+export const schema = `CREATE TABLE IF NOT EXISTS appointments (
+ id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ request_id CHAR(36) NOT NULL UNIQUE,
+ reference VARCHAR(40) NOT NULL UNIQUE,
+ payload_hash CHAR(64) NOT NULL,
+ patient_name VARCHAR(80) NOT NULL,
+ phone VARCHAR(13) NOT NULL,
+ email VARCHAR(254) NULL,
+ service VARCHAR(16) NOT NULL,
+ visit_date DATE NOT NULL,
+ visit_time TIME NOT NULL,
+ language VARCHAR(2) NOT NULL,
+ consent_version VARCHAR(16) NOT NULL,
+ notification_state VARCHAR(12) NOT NULL DEFAULT 'pending',
+ attempts INT UNSIGNED NOT NULL DEFAULT 0,
+ next_attempt_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ lease_token CHAR(36) NULL,
+ lease_until DATETIME NULL,
+ created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ sent_at DATETIME NULL,
+ INDEX queue_pending (notification_state,next_attempt_at),
+ INDEX request_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`;
