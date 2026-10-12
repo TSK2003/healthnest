@@ -29,9 +29,7 @@ jobs:
         run: node scripts/prerender.mjs
 
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_HEALTHNEST_E4D23 }}'
-          channelId: live
-          projectId: healthnest-e4d23
+        env:
+          FIREBASE_DEPLOY_TOKEN: ${{ secrets.FIREBASE_TOKEN || secrets.FIREBASE_SERVICE_ACCOUNT_HEALTHNEST_E4D23 }}
+        run: |
+          npx firebase-tools deploy --only hosting --token "$FIREBASE_DEPLOY_TOKEN" --project healthnest-e4d23
